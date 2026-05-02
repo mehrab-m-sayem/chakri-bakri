@@ -1,5 +1,10 @@
+# Node modules (root + frontend)
 node_modules
-# Keep environment variables out of version control
-.env
+frontend/node_modules
 
+# Env files
+.env
+.env.*
+
+# Prisma client output
 /src/generated/prisma
