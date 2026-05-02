@@ -1,0 +1,36 @@
+{
+  "name": "chakri-bakri",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mehrab-m-sayem/chakri-bakri.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mehrab-m-sayem/chakri-bakri/issues"
+  },
+  "homepage": "https://github.com/mehrab-m-sayem/chakri-bakri#readme",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "bcryptjs": "^3.0.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.20.0"
+  },
+  "devDependencies": {
+    "dotenv": "^17.4.2",
+    "nodemon": "^3.1.14",
+    "prisma": "^7.8.0"
+  }
+}
