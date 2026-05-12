@@ -53,7 +53,7 @@ function proxyAuth(req, res) {
 }
 
 const server = http.createServer((req, res) => {
-    if (req.url.startsWith('/auth/')) {
+    if (req.url.startsWith('/auth/') || req.url.startsWith('/jobs/')) {
         proxyAuth(req, res)
         return
     }

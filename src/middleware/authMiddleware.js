@@ -11,7 +11,7 @@ function authMiddleware(req, res, next) {
         ? authHeader.slice(7)
         : authHeader
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret_here", (err, decoded) => {
         if (err) {
             return res.status(401).json({ message: 'Invalid token' })
         }

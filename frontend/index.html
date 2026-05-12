@@ -22,49 +22,91 @@
                     <p id="connectionText">Use the form on the right to create an account or sign in.</p>
                 </div>
             </div>
-            <div class="token-box">
+            <!-- <div class="token-box">
                 <div class="token-box__label">Latest token</div>
                 <code id="tokenOutput">No token yet</code>
-            </div>
+            </div> -->
         </section>
 
         <section class="panel">
-            <div class="tabs" role="tablist" aria-label="Authentication forms">
-                <button class="tab active" data-tab="register" type="button">Register</button>
-                <button class="tab" data-tab="login" type="button">Login</button>
+            <div id="authContainer">
+                <div class="tabs" role="tablist" aria-label="Authentication forms">
+                    <button class="tab active" data-tab="register" type="button">Register</button>
+                    <button class="tab" data-tab="login" type="button">Login</button>
+                </div>
+
+                <form id="registerForm" class="form card active" autocomplete="on">
+                    <h2>Create account</h2>
+                    <label>
+                        Username
+                        <input type="text" name="username" placeholder="yourname" required />
+                    </label>
+                    <label>
+                        Email
+                        <input type="email" name="email" placeholder="you@example.com" required />
+                    </label>
+                    <label>
+                        Password
+                        <input type="password" name="password" placeholder="••••••••" required />
+                    </label>
+                    <button type="submit">Register</button>
+                    <p class="hint">Sends a POST request to <span>/auth/register</span>.</p>
+                </form>
+
+                <form id="loginForm" class="form card" autocomplete="on">
+                    <h2>Welcome back</h2>
+                    <label>
+                        Username
+                        <input type="text" name="username" placeholder="yourname" required />
+                    </label>
+                    <label>
+                        Password
+                        <input type="password" name="password" placeholder="••••••••" required />
+                    </label>
+                    <button type="submit">Login</button>
+                    <p class="hint">Sends a POST request to <span>/auth/login</span>.</p>
+                </form>
             </div>
 
-            <form id="registerForm" class="form card active" autocomplete="on">
-                <h2>Create account</h2>
-                <label>
-                    Username
-                    <input type="text" name="username" placeholder="yourname" required />
-                </label>
-                <label>
-                    Email
-                    <input type="email" name="email" placeholder="you@example.com" required />
-                </label>
-                <label>
-                    Password
-                    <input type="password" name="password" placeholder="••••••••" required />
-                </label>
-                <button type="submit">Register</button>
-                <p class="hint">Sends a POST request to <span>/auth/register</span>.</p>
-            </form>
+            <div id="dashboardContainer" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>Your Jobs Dashboard</h2>
+                    <button type="button" id="logoutBtn" style="padding: 6px 12px; background: var(--danger); border: none; color: white; border-radius: 4px; cursor: pointer;">Logout</button>
+                </div>
+                
+                <form id="jobsForm" class="card" autocomplete="off" style="margin-bottom: 20px;">
+                    <h3>Add a New Job</h3>
+                    <label>
+                        Title
+                        <input type="text" name="title" placeholder="Software Engineer" required />
+                    </label>
+                    <label>
+                        Company Name
+                        <input type="text" name="companyName" placeholder="Tech Corp" required />
+                    </label>
+                    <label style="display: flex; gap: 10px;">
+                        <div style="flex: 1;">
+                            Salary
+                            <input type="number" name="salary" placeholder="100000" />
+                        </div>
+                        <div style="flex: 1;">
+                            Status
+                            <select name="Status" style="width: 100%; padding: 8px; margin-top: 4px; border-radius: 4px;">
+                                <option value="pending">Pending</option>
+                                <option value="interview">Interview</option>
+                                <option value="offer">Offer</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="ghosted">Ghosted</option>
+                            </select>
+                        </div>
+                    </label>
+                    <button type="submit">Add Job</button>
+                </form>
 
-            <form id="loginForm" class="form card" autocomplete="on">
-                <h2>Welcome back</h2>
-                <label>
-                    Username
-                    <input type="text" name="username" placeholder="yourname" required />
-                </label>
-                <label>
-                    Password
-                    <input type="password" name="password" placeholder="••••••••" required />
-                </label>
-                <button type="submit">Login</button>
-                <p class="hint">Sends a POST request to <span>/auth/login</span>.</p>
-            </form>
+                <div id="jobsList" style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Jobs will be rendered here -->
+                </div>
+            </div>
 
             <div id="message" class="message" aria-live="polite"></div>
         </section>

@@ -1,0 +1,106 @@
+
+GET http://localhost:5003/
+
+
+### Register
+POST http://localhost:5003/auth/register
+Content-Type: application/json
+
+{
+    "username": "akash",
+    "email"   : "akash@gmail.com",
+    "password": "1234567"
+}
+
+### Login
+# @name login
+
+POST http://localhost:5003/auth/login
+Content-Type: application/json
+
+{
+    "username": "akash",
+    "password": "1234567"
+}
+
+### Store token from login response
+@token = {{login.response.body.token}}
+
+### Add Job (requires auth)
+
+POST http://localhost:5003/jobs/addJob
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Senior Frontend Developer",
+    "companyName": "TechCorp Inc",
+    "DateApplied": "2024-03-15T00:00:00.000Z",
+    "salary": 120000,
+    "description": "Leading the frontend development team.",
+    "Url": "https://techcorp.com/careers/senior-frontend",
+    "Status": "pending"
+}
+
+### Get all jobs (requires auth)
+
+GET http://localhost:5003/jobs
+Authorization: Bearer {{token}}
+
+### =============================================
+### DELETE JOB TEST CASES
+### =============================================
+
+### Test 1: Delete a job successfully (replace 1 with an actual job id)
+### Expected: 200 { "message": "Successfully deleted" }
+
+DELETE http://localhost:5003/jobs/1
+Authorization: Bearer {{token}}
+
+### Test 2: Delete a job that doesn't exist (non-existent id)
+### Expected: 404 { "message": "Job not found or unauthorized" }
+
+DELETE http://localhost:5003/jobs/999999
+Authorization: Bearer {{token}}
+
+### Test 3: Delete without auth token
+### Expected: 401 Unauthorized
+
+DELETE http://localhost:5003/jobs/1
+
+### Test 4: Delete someone else's job
+### First, login as a different user to get a different token
+# @name login2
+
+POST http://localhost:5003/auth/login
+Content-Type: application/json
+
+{
+    "username": "otheruser",
+    "password": "1234567"
+}
+
+###
+@token2 = {{login2.response.body.token}}
+
+### Now try to delete akash's job using otheruser's token
+### Expected: 404 { "message": "Job not found or unauthorized" }
+
+DELETE http://localhost:5003/jobs/1
+Authorization: Bearer {{token2}}
+
+
+###
+PUT http://localhost:5003/jobs/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Junior Frontend Developer",
+    "companyName": "TechCorp Inc",
+    "DateApplied": "2024-03-15T00:00:00.000Z",
+    "salary": 120000,
+    "description": "Leading the frontend development team.",
+    "Url": "https://techcorp.com/careers/senior-frontend",
+    "Status": "pending"
+}

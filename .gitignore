@@ -8,3 +8,5 @@ frontend/node_modules
 
 # Prisma client output
 /src/generated/prisma
+
+documentation.md 

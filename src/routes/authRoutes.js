@@ -6,11 +6,16 @@ import prisma from '../prismaClient.js'
 const router = express.Router()
 
 // new user registration
-router.post('/register', async(req,res) =>{
-    const {username, password, email} = req.body
-    const hashedPassword = await bcrypt.hashSync(password, 8)
+router.post('/register', async (req, res) => {
+    const { username, password, email } = req.body
 
-    try{
+    if (!username || !password || !email) {
+        return res.status(400).json({ message: "username, password and email are required" })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 8)
+
+    try {
         const user = await prisma.user.create({
             data: {
                 username,
@@ -18,41 +23,43 @@ router.post('/register', async(req,res) =>{
                 password: hashedPassword
             }
         })
-        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: '1h'})
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' })
         res.json({ token })
+    }
+    catch (err) {
+        console.log(err.message)
+        res.status(503).json({ message: "username or email already exists" })
+    }
+})
+
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body
+    if (!username || !password) {
+        return res.status(400).json({ message: "username, password are required" })
+    }
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                username: username
+            }
+        })
+        // if no user exist with this username
+        if (!user) { return res.status(404).send({ message: "user not found" }) }
+
+        const passwordIsValid = await bcrypt.compare(password, user.password)
+        //if password not match
+        if (!passwordIsValid) { return res.status(401).send({ message: "password not valid" }) }
+        console.log(user)
+
+        // if password and username good to go
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" })
+        return res.json({ token })
     }
     catch (err) {
         console.log(err.message)
         res.sendStatus(503)
     }
-})
 
-router.post('/login', async (req , res) => {
-        const {username, password} = req.body
-
-        try{
-            const user = await prisma.user.findUnique({
-                where: {
-                    username: username
-                }
-            })
-        // if no user exist with this username
-        if (!user) {return res.status(404).send({message: "user not found"})}
-
-        const passwordIsValid = await bcrypt.compare(password, user.password)
-        //if password not match
-        if(!passwordIsValid) {return res.status(401).send({message: "password not valid"})}
-            console.log(user)
-        
-        // if password and username good to go
-        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: "1h"})
-        return res.json({token})
-        }
-        catch(err){
-            console.log(err.message)
-            res.sendStatus(503)
-        }
-        
 
 
 }
