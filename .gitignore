@@ -10,3 +10,5 @@ frontend/node_modules
 /src/generated/prisma
 
 documentation.md 
+test.rest
+backend_code_review.md 
